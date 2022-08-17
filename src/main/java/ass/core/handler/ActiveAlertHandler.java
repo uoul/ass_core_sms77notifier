@@ -39,10 +39,12 @@ public class ActiveAlertHandler {
     }
 
     void sendSmsMinInformation(AlertMessages alertMessages) {
-        //Response response = sms77Client.sendSms(apiKey, smsSender, smsGroupMin, "Alarm von LFK!");
-        //if(response.getStatus() != 200) {
-        //    Log.warn("Error sending sms HTTP Code: " + response.getStatus());
-        //}
+        Response response = sms77Client.sendSms(apiKey, smsSender, smsGroupMin, "Alarm von LFK!");
+        if (response.getStatus() == 200) {
+            Log.info("Successfully sent sms request to " + smsGroupMin + "!");
+        } else {
+            Log.warn("Error sending sms request to " + smsGroupMin + " - HTTP Code: " + response.getStatus());
+        }
     }
 
     void sendSmsFullInformation(AlertMessages alertMessages) {
@@ -55,8 +57,11 @@ public class ActiveAlertHandler {
             smsText.set(smsText.get() + "Ort: " + msg.getLocation() + "\n");
             smsText.set(smsText.get() + "Info: " + msg.getInfo() + "\n");
         });
-        //sms77Client.sendSms(apiKey, smsSender, smsGroupFull, smsText.get());
-        Log.info(smsText.get());
-        Log.info("Message Length: " + smsText.get().length());
+        Response response = sms77Client.sendSms(apiKey, smsSender, smsGroupFull, smsText.get());
+        if (response.getStatus() == 200) {
+            Log.info("Successfully sent sms request to " + smsGroupFull + "!");
+        } else {
+            Log.warn("Error sending sms request to " + smsGroupFull + " - HTTP Code: " + response.getStatus());
+        }
     }
 }
