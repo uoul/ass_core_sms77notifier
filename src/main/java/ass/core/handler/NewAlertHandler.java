@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ApplicationScoped
-public class ActiveAlertHandler {
+public class NewAlertHandler {
 
     @Inject
     @RestClient
@@ -39,7 +39,7 @@ public class ActiveAlertHandler {
     }
 
     void sendSmsMinInformation(AlertMessages alertMessages) {
-        Response response = sms77Client.sendSms(apiKey, smsSender, smsGroupMin, "Alarm von LFK!");
+        Response response = sms77Client.sendSms(apiKey, smsSender, smsGroupMin, "ALARM von LFK!");
         if (response.getStatus() == 200) {
             Log.info("Successfully sent sms request to " + smsGroupMin + "!");
         } else {
@@ -48,7 +48,7 @@ public class ActiveAlertHandler {
     }
 
     void sendSmsFullInformation(AlertMessages alertMessages) {
-        AtomicReference<String> smsText = new AtomicReference<>("Alarm VON LFK!\n");
+        AtomicReference<String> smsText = new AtomicReference<>("ALARM von LFK!\n");
         alertMessages.getAlertMessages().forEach(msg -> {
             smsText.set(smsText.get() + "\n");
             smsText.set(smsText.get() + "Nr.: " + msg.getOperationId() + "\n");

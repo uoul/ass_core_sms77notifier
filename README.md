@@ -1,68 +1,37 @@
-# sms77notifier Project
+# Sms77Notifier
+The SMS77Notifier consumes new alerts from RabbitMQ Exchange and sends sms requests to 
+the sms77.io api to send sms messages.
+>**_NOTE:_** To use this service it's necessary to own a sms77.io account!
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Configruation
+The entire configuration can be done via environment variables. The following settings can be used:
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+| **Environment Variable**           | **Default Value**             | **Explanation**                                                                           |
+|------------------------------------|-------------------------------|-------------------------------------------------------------------------------------------|
+| _SMS77NOTIFIER_HTTP_PORT_          | 8081                          | Quarkus HTTP Port                                                                         |
+| _RABBITMQ_HOST_                    | localhost                     | RabbitMQ host                                                                             |
+| _RABBITMQ_PORT_                    | 5672                          | Port of the RabbitMQ broker                                                               |
+| _RABBITMQ_USER_                    | guest                         | RabbitMQ user                                                                             |
+| _RABBITMQ_PW_                      | guest                         | RabbitMQ password                                                                         |
+| _RABBITMQ_QUEUE_                   | sms77notifier-${quarkus.uuid} | RabbitMQ queue name for consumer (Default ends with random UUID)                          |
+| _RABBITMQ_ALERTS_EXCHANGE_         | NewAlerts                     | RabbitMQ exchange, that publish new alerts                                                |
+| _SMS77NOTIFIER_API_KEY_            | -                             | The generated api key from sms77.io                                                       |
+| _SMS77NOTIFIER_SENDER_             | Feuerwehr                     | The sender of the sms message (see on your phone)                                         |
+| _SMS77NOTIFIER_SMSGROUP_FULL_INFO_ | -                             | sms77 contact group, that should get full information about alerts                        |
+| _SMS77NOTIFIER_SMSGROUP_MIN_INFO_  | -                             | sms77 contact group, that should only get notification without any additional information |
 
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+## Message types
+### MIN_INFO (example)
+```text
+ALARM von LFK!
 ```
+### FULL_INFO (example)
+```text
+ALARM von LFK!
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
+Nr.: BWSt40002 
+Art: TE TIERRETTUNG
+Anrufer: Hasso / 0123456789
+Ort: 0000 Musterhausen, Musterweg 1
+Info: Tiger im Tank
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/sms77notifier-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Related Guides
-
-- SmallRye Reactive Messaging - RabbitMQ Connector ([guide](https://quarkus.io/guides/rabbitmq)): Connect to RabbitMQ with Reactive Messaging
-- REST Client Classic ([guide](https://quarkus.io/guides/rest-client)): Call REST services
-- SmallRye Health ([guide](https://quarkus.io/guides/microprofile-health)): Monitor service health
-
-## Provided Code
-
-### REST Client
-
-Invoke different services through REST with JSON
-
-[Related guide section...](https://quarkus.io/guides/rest-client)
-
-### SmallRye Health
-
-Monitor your application's health using SmallRye Health
-
-[Related guide section...](https://quarkus.io/guides/smallrye-health)
