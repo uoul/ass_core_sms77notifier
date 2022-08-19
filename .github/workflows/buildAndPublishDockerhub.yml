@@ -31,4 +31,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
           repository: uoul/ass-core-sms77notifier
-          tags: ${{github.run_number}}
+          tags: latest
